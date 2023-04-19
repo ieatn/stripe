@@ -52,20 +52,24 @@ addButtons.forEach(button => {
 // pk
 const stripe = Stripe('pk_test_1s5WylQ8DGGaYBscy5k5L1Lc00v0yymxZW');
 
+
+const cartItems = [
+    { id: 'item1', name: 'Product 1', price: 'price_1MjYIrFJJLeNOb5qceSUUiws', quantity: 2 },
+    { id: 'item2', name: 'Product 2', price: 'price_1MygHkFJJLeNOb5q9IbC4PFt', quantity: 1 },
+];
+
+const lineItems = cartItems.map(item => {
+    return {
+      price: `${item.price}`,
+      quantity: item.quantity,
+    };
+});
+
 checkout.addEventListener('click', () => {
     stripe.redirectToCheckout({
-        lineItems: [
-            { 
-                // create new product in stripe and copy price id
-                price: 'price_1MygHkFJJLeNOb5q9IbC4PFt',
-                quantity: 1,
-            },
-
-        ],
+        lineItems: lineItems,
         mode: 'payment',
         successUrl: 'https://www.google.com',
-        cancelUrl: 'https://www.twitter.com'
-    }).then(res => {
-        
+        cancelUrl: 'http://127.0.0.1:5500/'
     })
 })
